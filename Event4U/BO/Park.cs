@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace BO
 {
-    public class Class1
-    {
+    public class Park { 
+        public int Id { get; set; }
+        public ParkInformation ParkInformation { get; set; }
     }
 }
