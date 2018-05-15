@@ -19,12 +19,18 @@ namespace Event4U
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+//            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+//                     "~/Scripts/bootstrap.js",
+//                      "~/Scripts/respond.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/materialize").Include(
+                        "~/Content/materialize/js/materialize.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/main").Include(
+                        "~/Content/js/main.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/materialize/css/materialize.min.css",
                       "~/Content/site.css"));
         }
     }

@@ -1,24 +1,32 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿h1, h3 {
+    letter-spacing: 2px;
+    font-weight: 200;
+}
+.title-home {
+    color: #fff;
+    background-color: rgba(238,110,115, 0.5);
+    padding: 5px;
+    margin: 0;
+    width: 50%;
+}
+.container-bienvenue {
+    position: relative;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+.bienvenue {
+    position:absolute;
+    top:250px;
+    left:50%;
+    width: 500px;
+    margin-left : -250px;
+    z-index: 999;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
+.margin{
+    margin-top: 10px;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+.parallax-container {
+    height: 400px;
 }
+
