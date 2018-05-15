@@ -36,7 +36,9 @@ Nous attendons un PoC pour vendredi prochain et un site fonctionnel dans 10 jour
 * https://www.newtonsoft.com/json/help/html/DeserializeObject.htm
 * http://www.data.rennes-metropole.fr/espace-developpeurs/api-parking/
 * https://switch2osm.org
-
+* https://openclassrooms.com/courses/google-maps-javascript-api-v3
+* https://www.shatimes.com/2017/09/tuto-google-map-api-v3/
+* https://www.shatimes.com/2017/09/tuto-calculer-et-tracer-un-itineraire-avec-google-maps-api-v3/
 ## Tasks
 
 * Contexte
