@@ -47,7 +47,7 @@ namespace Event4U.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,name,date")] Event @event)
+        public ActionResult Create([Bind(Include = "Id,name,date,address,lat,lng")] Event @event)
         {
             if (ModelState.IsValid)
             {

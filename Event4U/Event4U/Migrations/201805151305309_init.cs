@@ -3,7 +3,7 @@ namespace Event4U.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class First : DbMigration
+    public partial class init : DbMigration
     {
         public override void Up()
         {
@@ -14,6 +14,9 @@ namespace Event4U.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         name = c.String(),
                         date = c.DateTime(nullable: false),
+                        lat = c.Single(nullable: false),
+                        lng = c.Single(nullable: false),
+                        address = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
