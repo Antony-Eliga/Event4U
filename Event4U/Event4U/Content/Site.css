@@ -58,4 +58,9 @@ main {
 
 .eventList {
     display: none;
+    background-color: #ee6e73;
+}
+
+.eventList .row {
+    margin-bottom: 0px;
 }

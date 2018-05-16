@@ -163,7 +163,6 @@ $(document).ready(function () {
         $(".container-bienvenue").hide();
         $(".back").show();
         $(".eventList").slideDown();
-        $("nav").slideUp();
     });
 
     $(".back").click(function () {
@@ -171,6 +170,5 @@ $(document).ready(function () {
         $(".container-bienvenue").show();
         $(".back").hide();
         $(".eventList").slideUp();
-        $("nav").slideDown();
     });
 });
