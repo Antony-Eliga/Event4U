@@ -236,7 +236,10 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\js\eventmap.js" />
+    <Content Include="Content\js\jquery-3.3.1.min.js" />
     <Content Include="Content\js\main.js" />
+    <Content Include="Content\js\maps.js" />
+    <Content Include="Content\js\underscore-min.js" />
     <Content Include="Content\materialize\css\materialize.min.css" />
     <Content Include="Content\materialize\js\materialize.min.js" />
     <Content Include="favicon.ico" />

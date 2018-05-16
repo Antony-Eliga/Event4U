@@ -40,10 +40,7 @@
     @Scripts.Render("~/bundles/materialize")
     @Scripts.Render("~/bundles/main")
     @RenderSection("scripts", required: false)
-
-    <script type="text/javascript"
-            src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDRBfU7utD96Wv1c9rcdSq3X8CUeJ3wC60">
-    </script>
-    <script type="text/javascript" src="~/content/js/eventmap.js"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCr0Xkn4FXRGGlH2l_x5fzCPB3lU7I02fE&libraries=geometry,places&sensor=false&language=fr&callback=initMap"></script>
 </body>
 </html>

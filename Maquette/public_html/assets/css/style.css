@@ -1,8 +1,18 @@
-﻿h1, h3 {
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+main {
+    height: 100%;
+}
+h1, h3 {
     letter-spacing: 2px;
     font-weight: 200;
 }
-
 .title-home {
     color: #fff;
     background-color: rgba(238,110,115, 0.5);
@@ -10,44 +20,23 @@
     margin: 0;
     width: 50%;
 }
-
 .container-bienvenue {
     position: relative;
 }
 
 .bienvenue {
-    position: absolute;
-    top: 250px;
-    left: 50%;
+    position:absolute;
+    top:250px;
+    left:50%;
     width: 500px;
-    margin-left: -250px;
+    margin-left : -250px;
     z-index: 999;
 }
 
-.margin {
+.margin{
     margin-top: 10px;
 }
 
 .parallax-container {
-    height: 400px;
-}
-
-body {
-    display: flex;
-    min-height: 100vh;
-    height: 100%;
-    flex-direction: column;
-}
-
-html {
-    height:100%;
-}
-
-main {
-    height:100%;
-    flex: 1 0 auto;
-}
-
-#map {
     height: 100%;
 }
