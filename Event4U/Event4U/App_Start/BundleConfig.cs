@@ -31,7 +31,8 @@ namespace Event4U
 
             bundles.Add(new ScriptBundle("~/bundles/main").Include(
                         "~/Content/js/underscore-min.js",
-                        "~/Content/js/maps.js"
+                        "~/Content/js/maps.js",
+                        "~/Content/js/main.js"
                         ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

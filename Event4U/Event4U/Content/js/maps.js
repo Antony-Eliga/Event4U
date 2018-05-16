@@ -160,7 +160,17 @@ function updateMap() {
 $(document).ready(function () {
     $("#go").click(function() {
         updateMap();
-        $(".container-bienvenue").hide()
-        $(".back").show()
+        $(".container-bienvenue").hide();
+        $(".back").show();
+        $(".eventList").slideDown();
+        $("nav").slideUp();
+    });
+
+    $(".back").click(function () {
+        initMap();
+        $(".container-bienvenue").show();
+        $(".back").hide();
+        $(".eventList").slideUp();
+        $("nav").slideDown();
     });
 });
