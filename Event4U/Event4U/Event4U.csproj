@@ -211,6 +211,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Constantes.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EventApiController.cs" />
     <Compile Include="Controllers\EventsController.cs" />
@@ -223,6 +224,10 @@
     <Compile Include="Migrations\201805161247358_First.cs" />
     <Compile Include="Migrations\201805161247358_First.Designer.cs">
       <DependentUpon>201805161247358_First.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805161317206_event.cs" />
+    <Compile Include="Migrations\201805161317206_event.Designer.cs">
+      <DependentUpon>201805161317206_event.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -334,6 +339,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201805161247358_First.resx">
       <DependentUpon>201805161247358_First.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805161317206_event.resx">
+      <DependentUpon>201805161317206_event.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

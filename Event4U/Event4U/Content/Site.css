@@ -62,7 +62,15 @@ main {
 }
 
 .eventList .row {
+<<<<<<< Updated upstream
   margin-bottom: 0px;
+=======
+        margin-bottom: 0px;
+    }
+
+.btn {
+    margin: 2px !important;
+>>>>>>> Stashed changes
 }
 
 .prev {

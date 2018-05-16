@@ -11,10 +11,12 @@ using Event4U.Models;
 
 namespace Event4U.Controllers
 {
+    [Authorize]
     public class EventsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        [AllowAnonymous]
         // GET: Events
         public ActionResult Index()
         {
