@@ -157,9 +157,10 @@ function updateMap() {
     }));
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     $("#go").click(function() {
         updateMap();
         $(".container-bienvenue").hide()
+        $(".back").show()
     });
 });
