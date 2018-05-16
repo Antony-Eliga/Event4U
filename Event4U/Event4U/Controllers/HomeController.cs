@@ -1,4 +1,5 @@
 ﻿using BO;
+using Event4U.Models;
 using Event4U.Services;
 using Newtonsoft.Json;
 using System;
@@ -12,14 +13,11 @@ namespace Event4U.Controllers
 {
     public class HomeController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         public ActionResult Index()
         {
-            string id = "colombier";
-            Parks.Feature feature = ParkService.getOneFeature(id);
-            Parks.Park park = ParkService.getOnePark(id);
-            Console.WriteLine(park.parkInformation.name);
-            Console.WriteLine(feature.geometry.coordinates[0] + " " + feature.geometry.coordinates[1]);
-            return View(ParkService.getAllParks());
+            return View(db.Events.ToList());
         }
 
         public ActionResult About()

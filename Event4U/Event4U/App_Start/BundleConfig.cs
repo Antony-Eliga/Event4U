@@ -31,13 +31,16 @@ namespace Event4U
 
             bundles.Add(new ScriptBundle("~/bundles/main").Include(
                         "~/Content/js/underscore-min.js",
-                        "~/Content/js/maps.js",
-                        "~/Content/js/main.js"
+                        "~/Content/js/glide.min.js",
+                        "~/Content/js/maps.js"
                         ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/materialize/css/materialize.min.css",
-                      "~/Content/site.css"));
+                      "~/Content/glide.core.min.css",
+                      "~/Content/glide.theme.min.css",
+                      "~/Content/site.css"
+                      ));
         }
     }
 }

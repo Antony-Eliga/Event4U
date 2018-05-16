@@ -6,6 +6,7 @@ const rennes = {
 };
 var map = null;
 var start = null;
+var stop = null;
 
 
 function urlToJson() {
@@ -15,9 +16,16 @@ function urlToJson() {
     return JSON.parse(Httpreq.responseText);
 }
 
+function getEvents() {
+    var Httpreq = new XMLHttpRequest(); // a new request
+    Httpreq.open("GET", "http://localhost:53287/EventApi/IndexJson", false);
+    Httpreq.send(null);
+    return JSON.parse(Httpreq.responseText);
+}
+
 function getParks() {
     const obj = urlToJson()
-    const parks = []
+    const parks = [];
     const features = obj.features;
     obj && obj.parks.forEach(function(park) {
         var geometry = null;
@@ -73,28 +81,31 @@ function getLocations(parks) {
 }
 
 function calculate(direction) {
-    console.log("calculate => direction", direction, start);
+    console.log("calculate => direction", direction, start, stop);
     const request = {
         origin: start,
-        destination: rennes,
+        destination: stop,
         travelMode: google.maps.DirectionsTravelMode.DRIVING
     }
     const directionsService = new google.maps.DirectionsService();
     directionsService.route(request, function(response, status) {
         if (status == google.maps.DirectionsStatus.OK) {
+            updateMap();
             direction.setDirections(response);
         }
     });
 }
 
-function placeChanged(isBack) {
+function placeChanged() {
+    const pathname = window.location.pathname;
+    const condition = (pathname == "/events/Create");
     const place = this.getPlace();
     const lat = place.geometry.location.lat();
     const lng = place.geometry.location.lng();
     console.log("placeChanged", place);
-    if (isBack) {
-        $("#latEvent").val(lat);
-        $("#lngEvent").val(lng);
+    if (condition) {
+        $("#lat").val(lat);
+        $("#lng").val(lng);
     } else {
         start = {
             lat: lat,
@@ -104,14 +115,21 @@ function placeChanged(isBack) {
 }
 
 function initMap() {
-    const zoom = 12;
-    const center = rennes;
+    const pathname = window.location.pathname;
+    const condition = (pathname != "/events/Create");
+    if (condition) {
+        const zoom = 12;
+        const center = rennes;
 
-    map = new google.maps.Map(document.getElementById("map"), {
-        zoom: zoom,
-        center: center
-    });
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: zoom,
+            center: center
+        });
+    }
+    initAutoComplete()
+}
 
+function initAutoComplete() {
     google.maps.event.addDomListener(window, "load", function() {
         const eventName = "place_changed";
         const element = document.getElementById("address");
@@ -120,6 +138,24 @@ function initMap() {
         });
         google.maps.event.addListener(autocomplete, eventName, placeChanged);
     });
+}
+
+function initGlide() {
+    const glide = new Glide('#intro', {
+        type: 'slider',
+        perView: 4,
+        focusAt: 'center',
+        breakpoints: {
+            800: {
+                perView: 2
+            },
+            480: {
+                perView: 1
+            }
+        }
+    })
+
+    glide.mount()
 }
 
 function updateMap() {
@@ -152,23 +188,39 @@ function updateMap() {
         imagePath: markerImage
     });
 
-    calculate(new google.maps.DirectionsRenderer({
-        map: map
-    }));
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
     $("#go").click(function() {
-        updateMap();
         $(".container-bienvenue").hide();
         $(".back").show();
         $(".eventList").slideDown();
+        $("main").css("height", "calc(100% - 275px)");
+        initGlide();
     });
 
-    $(".back").click(function () {
+    $(".back").click(function() {
         initMap();
         $(".container-bienvenue").show();
         $(".back").hide();
+        $("main").css("height", "calc(100% - 134px)");
         $(".eventList").slideUp();
+    });
+
+    $(".slide").click(function() {
+        $(".slide").removeClass("glide__slide--active selected");
+        $(this).addClass("selected");
+        const events = getEvents();
+        const event = _.findWhere(events, {
+            Id: $(this).data("id")
+        });
+        stop && initMap();
+        stop = {
+            lat: event.lat,
+            lng: event.lng
+        };
+        calculate(new google.maps.DirectionsRenderer({
+            map: map
+        }));
     });
 });

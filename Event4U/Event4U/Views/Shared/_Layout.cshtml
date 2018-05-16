@@ -1,34 +1,60 @@
-﻿<!DOCTYPE html>
+﻿@model IEnumerable<BO.Event>
+
+<!DOCTYPE html>
 <html>
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Home</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> @Styles.Render("~/Content/css") @Scripts.Render("~/bundles/modernizr")
 
 </head>
+
 <body>
     <header>
         <nav>
             <div class="container">
                 <div class="nav-wrapper">
                     <a href="index.html" class="brand-logo">Event4U</a>
-                    <ul id="nav-mobile" class="right hide-on-med-and-down"></ul>
-                    <ul class="right side-nav" id="nav-mobile">
-                        <li class="hide-on-small-only"><a href="collapsible.html"><i class="material-icons">arrow_back</i></a></li>
-                        <li>@Html.ActionLink("Accueil", "Index", "Home")</li>
-                        <li>@Html.Partial("_LoginPartial")</li>
-                    </ul>
-                    <a class="button-collapse" href="#" data-activates='nav-mobile'><i class="material-icons">menu</i></a>
                 </div>
             </div>
         </nav>
-        <div class="eventList col s12 m2">
-            <div class="row">
 
+        <div class="eventList col s12 m2">
+            <div id="intro" class="glide">
+                <div class="glide__track" data-glide-el="track">
+                    <ul class="glide__slides">
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <li class="glide__slide slide" data-id=@item.Id>
+                                    <div class='card-panel'>
+                                        @Html.DisplayFor(modelItem => item.name)
+                                        <br />
+                                        @Html.DisplayFor(modelItem => item.date)
+                                    </div>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+
+                <div data-glide-el="controls">
+                    <button class="glide__arrow glide__arrow--prev prev" data-glide-dir="<">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                            <path d="M0 12l10.975 11 2.848-2.828-6.176-6.176H24v-3.992H7.646l6.176-6.176L10.975 1 0 12z" />
+                        </svg>
+                    </button>
+
+                    <button class="glide__arrow glide__arrow--next next" data-glide-dir=">">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                            <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -42,11 +68,9 @@
             </div>
         </div>
     </footer>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/materialize")
-    @Scripts.Render("~/bundles/main")
-    @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundles/jquery") @Scripts.Render("~/bundles/materialize") @Scripts.Render("~/bundles/main") @RenderSection("scripts", required: false)
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCr0Xkn4FXRGGlH2l_x5fzCPB3lU7I02fE&libraries=geometry,places&sensor=false&language=fr&callback=initMap"></script>
 </body>
+
 </html>
