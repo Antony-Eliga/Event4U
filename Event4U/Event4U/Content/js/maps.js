@@ -4,10 +4,9 @@ const rennes = {
     lat: 48.1119800,
     lng: -1.6742900
 };
-const pace = {
-    lat: 48.15,
-    lng: -1.7667
-};
+var map = null;
+var start = null;
+
 
 function urlToJson() {
     var Httpreq = new XMLHttpRequest(); // a new request
@@ -36,12 +35,12 @@ function getParks() {
             coordinates: geometry.coordinates
         });
     });
+    console.log("getParks => parks", parks);
     return parks;
 }
 
 function get3Parks() {
     var parks = getParks();
-    var parksSort = [];
     parks = _.where(parks, {
         status: "AVAILABLE"
     });
@@ -53,13 +52,12 @@ function get3Parks() {
             new google.maps.LatLng(rennes.lat, rennes.lng),
             new google.maps.LatLng(park.coordinates[1], park.coordinates[0]));
     });
-    parksSort = _.sortBy(parks, "distance");
-    console.log("parksSort", parksSort);
-    return [parksSort[0], parksSort[1], parksSort[2]];
+    parks = _.sortBy(parks, "distance");
+    console.log("get3Parks => parks", parks);
+    return [parks[0], parks[1], parks[2]];
 }
 
-function getLocations() {
-    const parks = getParks()
+function getLocations(parks) {
     const locations = [];
     parks.forEach(function(park) {
         locations.push({
@@ -70,56 +68,75 @@ function getLocations() {
             name: park.name
         })
     })
-    return locations;
-}
-
-function get3Locations() {
-    const parks = get3Parks()
-    const locations = [];
-    parks.forEach(function(park) {
-        locations.push({
-            coordinates: {
-                lat: park.coordinates[1],
-                lng: park.coordinates[0]
-            },
-            name: park.name
-        })
-    })
+    console.log("getLocations => locations", locations);
     return locations;
 }
 
 function calculate(direction) {
-    var request = {
-        origin: pace,
+    console.log("calculate => direction", direction, start);
+    const request = {
+        origin: start,
         destination: rennes,
         travelMode: google.maps.DirectionsTravelMode.DRIVING
     }
-    var directionsService = new google.maps.DirectionsService();
-    directionsService.route(request, function(response, status) { // Envoie de la requête pour calculer le parcours
+    const directionsService = new google.maps.DirectionsService();
+    directionsService.route(request, function(response, status) {
         if (status == google.maps.DirectionsStatus.OK) {
-            direction.setDirections(response); // Trace l'itinéraire sur la carte et les différentes étapes du parcours
+            direction.setDirections(response);
         }
     });
 }
 
-const locations = getLocations();
+function placeChanged(isBack) {
+    const place = this.getPlace();
+    const lat = place.geometry.location.lat();
+    const lng = place.geometry.location.lng();
+    console.log("placeChanged", place);
+    if (isBack) {
+        $("#latEvent").val(lat);
+        $("#lngEvent").val(lng);
+    } else {
+        start = {
+            lat: lat,
+            lng: lng
+        };
+    }
+}
 
 function initMap() {
+    const zoom = 12;
+    const center = rennes;
 
-    var map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 12,
-        center: rennes
+    map = new google.maps.Map(document.getElementById("map"), {
+        zoom: zoom,
+        center: center
     });
 
-    const locations3 = get3Locations();
-    // Add some markers to the map.
-    // Note: The code uses the JavaScript Array.prototype.map() method to
-    // create an array of markers based on a given "locations" array.
-    // The map() method here has nothing to do with the Google Maps API.
-    var markers = locations3.map(function(location) {
+    google.maps.event.addDomListener(window, "load", function() {
+        const eventName = "place_changed";
+        const element = document.getElementById("address");
+        const autocomplete = new google.maps.places.Autocomplete(element, {
+            types: ["geocode"]
+        });
+        google.maps.event.addListener(autocomplete, eventName, placeChanged);
+    });
+}
+
+function updateMap() {
+    const locations = getLocations(get3Parks());
+    const markerImage = "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m";
+    const parking = {
+        url: "Content/img/parking.png",
+        size: new google.maps.Size(32, 32),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(0, 32)
+    };
+
+    const markers = locations.map(function(location) {
         const marker = new google.maps.Marker({
             position: location.coordinates,
-            label: location.name
+            label: location.name,
+            icon: parking
         });
         const infoWindow = new google.maps.InfoWindow({
             content: location.name,
@@ -131,17 +148,18 @@ function initMap() {
         return marker;
     });
 
-
-
-
-    // Add a marker clusterer to manage the markers.
-    var markerCluster = new MarkerClusterer(map, markers, {
-        imagePath: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m"
+    const markerCluster = new MarkerClusterer(map, markers, {
+        imagePath: markerImage
     });
 
-    direction = new google.maps.DirectionsRenderer({
+    calculate(new google.maps.DirectionsRenderer({
         map: map
-    });
-
-    calculate(direction);
+    }));
 }
+
+$(document).ready(function() {
+    $("#go").click(function() {
+        updateMap();
+        $(".container-bienvenue").hide()
+    });
+});

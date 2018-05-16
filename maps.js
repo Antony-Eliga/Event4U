@@ -105,6 +105,13 @@ function calculate(direction) {
 const locations = getLocations();
 
 function initMap() {
+    const iconBase = "https://maps.google.com/mapfiles/kml/shapes/";
+    const parking = {
+        url: "parking.png",
+        size: new google.maps.Size(32, 32),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(0, 32)
+    };
 
     var map = new google.maps.Map(document.getElementById("map"), {
         zoom: 12,
@@ -119,7 +126,8 @@ function initMap() {
     var markers = locations3.map(function(location) {
         const marker = new google.maps.Marker({
             position: location.coordinates,
-            label: location.name
+            label: location.name,
+            icon: parking
         });
         const infoWindow = new google.maps.InfoWindow({
             content: location.name,

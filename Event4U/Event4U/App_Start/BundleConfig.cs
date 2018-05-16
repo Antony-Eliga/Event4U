@@ -30,9 +30,7 @@ namespace Event4U
             "~/Content/materialize/js/materialize.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/main").Include(
-                        "~/Content/js/main.js",
                         "~/Content/js/underscore-min.js",
-                        "~/Content/js/eventmap.js",
                         "~/Content/js/maps.js"
                         ));
 
