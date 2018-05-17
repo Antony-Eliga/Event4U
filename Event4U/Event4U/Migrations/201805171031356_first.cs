@@ -3,7 +3,7 @@ namespace Event4U.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class First : DbMigration
+    public partial class first : DbMigration
     {
         public override void Up()
         {
@@ -14,11 +14,25 @@ namespace Event4U.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         name = c.String(),
                         date = c.DateTime(nullable: false),
+                        dateFin = c.DateTime(nullable: false),
+                        descriptif = c.String(),
                         lat = c.Single(nullable: false),
                         lng = c.Single(nullable: false),
                         address = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Images",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Path = c.String(),
+                        Event_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Events", t => t.Event_Id)
+                .Index(t => t.Event_Id);
             
             CreateTable(
                 "dbo.Parks",
@@ -108,18 +122,21 @@ namespace Event4U.Migrations
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
+            DropForeignKey("dbo.Images", "Event_Id", "dbo.Events");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.Images", new[] { "Event_Id" });
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.Parks");
+            DropTable("dbo.Images");
             DropTable("dbo.Events");
         }
     }

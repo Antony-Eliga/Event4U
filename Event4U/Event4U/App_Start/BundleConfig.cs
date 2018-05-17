@@ -33,7 +33,8 @@ namespace Event4U
                         "~/Content/js/underscore-min.js",
                         "~/Content/js/jquery.csv.min.js",
                         "~/Content/js/glide.min.js",
-                        "~/Content/js/maps.js"
+                        "~/Content/js/maps.js",
+                        "~/Content/js/main.js"
                         ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
