@@ -31,6 +31,7 @@ namespace Event4U
 
             bundles.Add(new ScriptBundle("~/bundles/main").Include(
                         "~/Content/js/underscore-min.js",
+                        "~/Content/js/jquery.csv.min.js",
                         "~/Content/js/glide.min.js",
                         "~/Content/js/maps.js"
                         ));

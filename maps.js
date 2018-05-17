@@ -1,20 +1,11 @@
-const glide = new Glide('#intro', {
-    type: 'carousel',
-    perView: 4,
-    focusAt: 'center',
-    breakpoints: {
-        800: {
-            perView: 2
-        },
-        480: {
-            perView: 1
-        }
-    }
-})
-
-glide.mount()
-
-$(".slide").click(function() {
-    $(".slide").removeClass("glide__slide--active selected");
-    $(this).addClass("selected");
+$(document).ready(function() {
+    var Httpreq = new XMLHttpRequest(); // a new request
+    Httpreq.open("GET", "http://data.citedia.com/r1/parks/timetable-and-prices", false);
+    Httpreq.send(null);
+    Httpreq.responseText;
+    data = $.csv.toObjects(Httpreq.responseText, {
+        separator: ";",
+        delimiter: "\n"
+    });
+    console.log("data", data)
 });

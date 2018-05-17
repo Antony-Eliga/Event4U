@@ -16,6 +16,19 @@ function urlToJson() {
     return JSON.parse(Httpreq.responseText);
 }
 
+function getInfos() {
+    var Httpreq = new XMLHttpRequest(); // a new request
+    Httpreq.open("GET", "http://data.citedia.com/r1/parks/timetable-and-prices", false);
+    Httpreq.send(null);
+    Httpreq.responseText;
+    data = $.csv.toObjects(Httpreq.responseText, {
+        separator: ";",
+        delimiter: "\n"
+    });
+    console.log("data", data)
+    return data;
+}
+
 function getEvents() {
     var Httpreq = new XMLHttpRequest(); // a new request
     Httpreq.open("GET", "http://localhost:53287/EventApi/IndexJson", false);
@@ -27,20 +40,33 @@ function getParks() {
     const obj = urlToJson()
     const parks = [];
     const features = obj.features;
+    const infos = getInfos();
     obj && obj.parks.forEach(function(park) {
         var geometry = null;
+        var parkingInfo = null;
         features && features.features.forEach(function(feature) {
             if (feature.id == park.id) {
                 geometry = feature.geometry;
             }
-        })
+        });
+        infos && infos.forEach(function(info) {
+            console.log("info.Parking == park.id", info.Parking == park.id, info.Parking, park.id)
+            if (info.Parking == park.id) {
+                parkingInfo = info;
+            }
+        });
         parks.push({
             id: park.id,
             name: park.parkInformation.name,
             status: park.parkInformation.status,
             max: park.parkInformation.max,
             free: park.parkInformation.max,
-            coordinates: geometry.coordinates
+            coordinates: geometry.coordinates,
+            address: parkingInfo && parkingInfo.Adresse,
+            capacite: parkingInfo && parkingInfo.Capacite,
+            horaire: parkingInfo && parkingInfo.Horaires,
+            seuil: parkingInfo && parkingInfo.Seuil_complet,
+            tarif: parkingInfo && parkingInfo.Tarifs
         });
     });
     console.log("getParks => parks", parks);
@@ -126,7 +152,8 @@ function initMap() {
             center: center
         });
     }
-    initAutoComplete()
+    initAutoComplete();
+
 }
 
 function initAutoComplete() {
