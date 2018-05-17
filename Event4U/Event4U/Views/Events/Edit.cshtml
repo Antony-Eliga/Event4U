@@ -4,45 +4,55 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<div class="container">
+    <div class="row">
+        <div class="col s12 m12">
+            <div class="card-panel">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <h2>Editer un événement</h2>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Id)
+                    <div class="input-field col s12">
+                        @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "" })
+                        @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "" } })
+                        @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                    </div>
 
+                    <div class="input-field col s12">
+                        @Html.LabelFor(model => model.date, htmlAttributes: new { @class = "" })
+                        @Html.EditorFor(model => model.date, new { htmlAttributes = new { @type = "date", @class = "" } })
+                        @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
+                    </div>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Event</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+                    <div class="input-field col s12">
+                        @Html.LabelFor(model => model.address, htmlAttributes: new { @class = "" })
+                        @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "", @id = "address" } })
+                        @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="input-field col s12">
+                        @Html.LabelFor(model => model.lat, htmlAttributes: new { @class = "" })
+                        @Html.EditorFor(model => model.lat, new { htmlAttributes = new { @type = "hidden", @step = "0.01", @class = "form-control", @id = "lat" } })
+                        @Html.ValidationMessageFor(model => model.lat, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="input-field col s12">
+                        @Html.LabelFor(model => model.lng, htmlAttributes: new { @class = "" })
+                        @Html.EditorFor(model => model.lng, new { htmlAttributes = new { @type = "hidden", @step = "0.01", @class = "form-control", @id = "lng" } })
+                        @Html.ValidationMessageFor(model => model.lng, "", new { @class = "text-danger" })
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <div class="row">
+                        <input type="submit" value="Valider" class="waves-effect waves-light btn blue lighten-1" />
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                    <div>
+                        @Html.ActionLink("Retour à la liste", "Index")
+                    </div>
+                }
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
 
 @section Scripts {

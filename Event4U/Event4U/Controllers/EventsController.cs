@@ -23,6 +23,13 @@ namespace Event4U.Controllers
             return View(db.Events.ToList());
         }
 
+        [AllowAnonymous]
+        // GET: Events
+        public ActionResult IndexPartial()
+        {
+            return PartialView(@"~/Views/Events/View.cshtml", db.Events.ToList());
+        }
+
         // GET: Events/Details/5
         public ActionResult Details(int? id)
         {
@@ -81,7 +88,7 @@ namespace Event4U.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,name,date")] Event @event)
+        public ActionResult Edit([Bind(Include = "Id,name,date,lat,lng,address")] Event @event)
         {
             if (ModelState.IsValid)
             {

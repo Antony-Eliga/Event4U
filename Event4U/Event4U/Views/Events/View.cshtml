@@ -1,0 +1,15 @@
+﻿@model IEnumerable<BO.Event>
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        <li class="glide__slide slide" data-id=@item.Id>
+            <div class='card-panel'>
+                @Html.DisplayFor(modelItem => item.name)
+                <br />
+                @Html.DisplayFor(modelItem => item.date)
+            </div>
+        </li>
+    }
+}

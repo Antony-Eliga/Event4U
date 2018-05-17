@@ -1,6 +1,4 @@
-﻿@model IEnumerable<BO.Event>
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -26,22 +24,9 @@
             <div id="intro" class="glide">
                 <div class="glide__track" data-glide-el="track">
                     <ul class="glide__slides">
-                        @if (Model != null)
-                        {
-                            foreach (var item in Model)
-                            {
-                                <li class="glide__slide slide" data-id=@item.Id>
-                                    <div class='card-panel'>
-                                        @Html.DisplayFor(modelItem => item.name)
-                                        <br />
-                                        @Html.DisplayFor(modelItem => item.date)
-                                    </div>
-                                </li>
-                            }
-                        }
+                        @Html.Action("IndexPartial", "Events")
                     </ul>
                 </div>
-
                 <div data-glide-el="controls">
                     <button class="glide__arrow glide__arrow--prev prev" data-glide-dir="<">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
