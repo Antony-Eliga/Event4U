@@ -24,6 +24,7 @@ namespace Event4U.Controllers
 
         public ActionResult DetailEvent(int id)
         {
+            db.Events.Find(id);
             return PartialView(@"~/Views/Events/DetailEvent.cshtml", db.Events.Find(id));
         }
     }

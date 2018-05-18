@@ -1,15 +1,14 @@
 ﻿@model BO.Event
 
-
 <li>
     <div class="slider">
         <ul class="slides">
-            @*@foreach (var url in Model.image)
-                {
-                    <li>
-                        <img src=@url>
-                    </li>
-                }*@
+            @foreach (var url in Model.Images)
+            {
+            <li>
+                <img src="@Url.Content("~/")@(url.Path)">
+            </li>
+            }
         </ul>
     </div>
 </li>

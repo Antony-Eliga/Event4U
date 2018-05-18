@@ -20,10 +20,16 @@
                         @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
                     </div>
 
-                    <div class="input-field col s12">
+                    <div class="input-field col s12 m6">
                         @Html.LabelFor(model => model.date, htmlAttributes: new { @class = "" })
                         @Html.EditorFor(model => model.date, new { htmlAttributes = new { @type = "date", @class = "" } })
                         @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="input-field col s12 m6">
+                        @Html.LabelFor(model => model.dateFin, htmlAttributes: new { @class = "" })
+                        @Html.EditorFor(model => model.dateFin, new { htmlAttributes = new { @type = "date", @class = "" } })
+                        @Html.ValidationMessageFor(model => model.dateFin, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="input-field col s12">
@@ -33,7 +39,6 @@
                     </div>
 
                     <div class="input-field col s12">
-                        @Html.LabelFor(model => model.address, htmlAttributes: new { @class = "" })
                         @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "", @id = "address" } })
                         @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
                     </div>
