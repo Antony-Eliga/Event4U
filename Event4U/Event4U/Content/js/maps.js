@@ -7,21 +7,28 @@ const rennes = {
 var map = null;
 var start = null;
 var stop = null;
+var event = null;
 
 
 function urlToJson() {
-    var Httpreq = new XMLHttpRequest(); // a new request
+    const Httpreq = new XMLHttpRequest(); // a new request
     Httpreq.open("GET", baseUrl, false);
     Httpreq.send(null);
     return JSON.parse(Httpreq.responseText);
 }
 
 function getInfos() {
-    var Httpreq = new XMLHttpRequest(); // a new request
+    const Httpreq = new XMLHttpRequest(); // a new request
     Httpreq.open("GET", "http://data.citedia.com/r1/parks/timetable-and-prices", false);
     Httpreq.send(null);
-    Httpreq.responseText;
-    data = $.csv.toObjects(Httpreq.responseText, {
+    var csv = Httpreq.responseText;
+    Httpreq.responseText.replace(/"(.*?)"/g, function(match, g1, g2) {
+        const cleanText = g1.replace(/;/g, " ");
+        console.log("responseText", match, "/", g1, "/", g2, "/", cleanText);
+        csv = csv.replace(match, cleanText);
+    });
+    console.log("csv", csv)
+    const data = $.csv.toObjects(csv, {
         separator: ";",
         delimiter: "\n"
     });
@@ -50,20 +57,19 @@ function getParks() {
             }
         });
         infos && infos.forEach(function(info) {
-            console.log("info.Parking == park.id", info.Parking == park.id, info.Parking, park.id)
             if (info.Parking == park.id) {
                 parkingInfo = info;
             }
         });
         parks.push({
             id: park.id,
-            name: park.parkInformation.name,
-            status: park.parkInformation.status,
-            max: park.parkInformation.max,
-            free: park.parkInformation.max,
+            name: park.parkInformation && park.parkInformation.name || "Kleber",
+            status: park.parkInformation && park.parkInformation.status || "FULL",
+            max: park.parkInformation && park.parkInformation.max || 0,
+            free: park.parkInformation && park.parkInformation.free || 0,
             coordinates: geometry.coordinates,
             address: parkingInfo && parkingInfo.Adresse,
-            capacite: parkingInfo && parkingInfo.Capacite,
+            capacite: parkingInfo && parkingInfo.Capacité,
             horaire: parkingInfo && parkingInfo.Horaires,
             seuil: parkingInfo && parkingInfo.Seuil_complet,
             tarif: parkingInfo && parkingInfo.Tarifs
@@ -83,7 +89,7 @@ function get3Parks() {
     });
     parks.forEach(function(park) {
         park.distance = google.maps.geometry.spherical.computeDistanceBetween(
-            new google.maps.LatLng(rennes.lat, rennes.lng),
+            new google.maps.LatLng(event.lat, event.lng),
             new google.maps.LatLng(park.coordinates[1], park.coordinates[0]));
     });
     parks = _.sortBy(parks, "distance");
@@ -102,7 +108,6 @@ function getLocations(parks) {
             name: park.name
         })
     })
-    console.log("getLocations => locations", locations);
     return locations;
 }
 
@@ -112,11 +117,10 @@ function calculate(direction) {
         origin: start,
         destination: stop,
         travelMode: google.maps.DirectionsTravelMode.DRIVING
-    }
+    };
     const directionsService = new google.maps.DirectionsService();
     directionsService.route(request, function(response, status) {
         if (status == google.maps.DirectionsStatus.OK) {
-            updateMap();
             direction.setDirections(response);
         }
     });
@@ -128,7 +132,6 @@ function placeChanged() {
     const place = this.getPlace();
     const lat = place.geometry.location.lat();
     const lng = place.geometry.location.lng();
-    console.log("placeChanged", place);
     if (condition) {
         $("#lat").val(lat);
         $("#lng").val(lng);
@@ -143,6 +146,7 @@ function placeChanged() {
 function initMap() {
     const pathname = window.location.pathname;
     const condition = (pathname != "/events/Create");
+    event = null;
     if (condition) {
         const zoom = 12;
         const center = rennes;
@@ -153,7 +157,6 @@ function initMap() {
         });
     }
     initAutoComplete();
-
 }
 
 function initAutoComplete() {
@@ -168,10 +171,10 @@ function initAutoComplete() {
 }
 
 function initGlide() {
-    const glide = new Glide('#intro', {
-        type: 'slider',
+    const glide = new Glide("#intro", {
+        type: "slider",
         perView: 4,
-        focusAt: 'center',
+        focusAt: "center",
         breakpoints: {
             800: {
                 perView: 2
@@ -186,24 +189,21 @@ function initGlide() {
 }
 
 function updateMap() {
-    const locations = getLocations(get3Parks());
+    const locations = [event];
     const markerImage = "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m";
-    const parking = {
-        url: "Content/img/parking.png",
-        size: new google.maps.Size(32, 32),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(0, 32)
-    };
 
     const markers = locations.map(function(location) {
+        const position = {
+            lat: location.lat,
+            lng: location.lng
+        };
         const marker = new google.maps.Marker({
-            position: location.coordinates,
+            position: position,
             label: location.name,
-            icon: parking
         });
         const infoWindow = new google.maps.InfoWindow({
             content: location.name,
-            position: location.coordinates
+            position: position
         });
         google.maps.event.addListener(marker, "click", function() {
             infoWindow.open(map, marker);
@@ -214,40 +214,109 @@ function updateMap() {
     const markerCluster = new MarkerClusterer(map, markers, {
         imagePath: markerImage
     });
+}
 
+function setParkingsMenu(park, i) {
+    const coordinates = {
+        lat: park.coordinates[1],
+        lng: park.coordinates[0]
+    };
+    var service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix({
+        origins: [start],
+        destinations: [coordinates],
+        travelMode: "DRIVING",
+    }, function(response, status) {
+        const duration = response.rows[0].elements[0].duration.text;
+        const distance = response.rows[0].elements[0].distance.text;
+
+        console.log("response setParkingsMenu", response, status);
+        const html = `<div class="row">
+        <div class="col s2 light-blue-text text-darken-1"><i class="material-icons">local_parking</i></div>
+        <div class="col s10">${park.name}<br/>
+        <span class="teal-text text-accent-4">${duration} - ${distance}</span><br/>
+        <span>${park.free}/${park.max} places disponibles</span><br/><br/>
+        <span>${park.tarif}</span>
+        </div>
+        </div>`;
+        $(".parking:eq(" + i + ")").data("id", park.id);
+        $(".parking:eq(" + i + ")").html(html);
+        $(".parking:eq(" + i + ")").click(function() {
+            stop && initMap();
+            stop = coordinates;
+            calculate(new google.maps.DirectionsRenderer({
+                map: map
+            }));
+        });
+    });
 }
 
 $(document).ready(function() {
+    //init sideNav sur map
+    $(".button-collapse").sideNav({
+        closeOnClick: false,
+        onOpen: function(el) {
+            $(".button-collapse").css("left", "300px");
+            $("#sidenav-overlay").hide();
+            $(".drag-target").hide();
+            $(".button-collapse i").html("arrow_back")
+        },
+        onClose: function(el) {
+            $(".button-collapse").css("left", "0px");
+            $(".button-collapse i").html("arrow_forward")
+        }
+    });
+
+    initGlide();
+
     $("#go").click(function() {
         $(".container-bienvenue").hide();
         $(".back").show();
-        $(".eventList").slideDown();
         $("main").css("height", "calc(100% - 275px)");
-        initGlide();
     });
 
+    $("#address").keypress(function(e) {
+        if (e.which == 13) {
+            e.preventDefault();
+        }
+    });
+
+    //Click retour arrière
     $(".back").click(function() {
         initMap();
         $(".container-bienvenue").show();
+        $(".button-collapse").sideNav("hide");
+        $(".button-collapse").hide();
         $(".back").hide();
         $("main").css("height", "calc(100% - 134px)");
-        $(".eventList").slideUp();
     });
 
+    //Click sur un event
     $(".slide").click(function() {
         $(".slide").removeClass("glide__slide--active selected");
         $(this).addClass("selected");
+
         const events = getEvents();
-        const event = _.findWhere(events, {
+        const eventOne = _.findWhere(events, {
             Id: $(this).data("id")
         });
-        stop && initMap();
-        stop = {
-            lat: event.lat,
-            lng: event.lng
-        };
-        calculate(new google.maps.DirectionsRenderer({
-            map: map
-        }));
+        event && initMap();
+        event = eventOne;
+        updateMap();
+        $.ajax({
+            url: "http://localhost:53287/EventApi/DetailEvent/" + event.Id,
+        }).done(function(data) {
+            const parks = get3Parks();
+            $(".side-nav").html(data);
+
+            if ($(".side-nav").css("transform") === "matrix(1, 0, 0, 1, -300, 0)") {
+                $(".button-collapse").sideNav("show");
+            }
+            $(".button-collapse").show();
+
+            parks.forEach(function(park, i) {
+                setParkingsMenu(park, i);
+            });
+        });
     });
 });

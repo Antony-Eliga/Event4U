@@ -7,13 +7,13 @@ namespace Event4U.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class first : IMigrationMetadata
+    public sealed partial class coucou : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(first));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(coucou));
         
         string IMigrationMetadata.Id
         {
-            get { return "201805171031356_first"; }
+            get { return "201805181027036_coucou"; }
         }
         
         string IMigrationMetadata.Source

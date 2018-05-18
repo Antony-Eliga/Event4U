@@ -221,9 +221,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805171031356_first.cs" />
-    <Compile Include="Migrations\201805171031356_first.Designer.cs">
-      <DependentUpon>201805171031356_first.cs</DependentUpon>
+    <Compile Include="Migrations\201805181027036_coucou.cs" />
+    <Compile Include="Migrations\201805181027036_coucou.Designer.cs">
+      <DependentUpon>201805181027036_coucou.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201805171443376_fk.cs" />
     <Compile Include="Migrations\201805171443376_fk.Designer.cs">
@@ -341,8 +341,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201805171031356_first.resx">
-      <DependentUpon>201805171031356_first.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805181027036_coucou.resx">
+      <DependentUpon>201805181027036_coucou.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805171443376_fk.resx">
       <DependentUpon>201805171443376_fk.cs</DependentUpon>
