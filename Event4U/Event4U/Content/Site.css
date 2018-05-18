@@ -64,10 +64,6 @@ main {
   right: 25px;
 }
 
-.slider {
-  height: 188px;
-}
-
 .slides {
   height: 100% !important;
 }

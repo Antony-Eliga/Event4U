@@ -241,6 +241,10 @@ function setParkingsMenu(park, i) {
         </div>`;
         $(".parking:eq(" + i + ")").data("id", park.id);
         $(".parking:eq(" + i + ")").html(html);
+        $(".slider").slider({
+            interval: 1000,
+            height: 188
+        });
         $(".parking:eq(" + i + ")").click(function() {
             stop && initMap();
             stop = coordinates;

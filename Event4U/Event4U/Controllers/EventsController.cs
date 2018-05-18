@@ -70,7 +70,7 @@ namespace Event4U.Controllers
                         file.SaveAs(_path);
 
                         Image img = new Image();
-                        img.Path = $"~/Content/upload/{_FileName}";
+                        img.Path = $"Content/upload/{_FileName}";
                         img.Event = @event;
                         db.Images.Add(img);
                     }

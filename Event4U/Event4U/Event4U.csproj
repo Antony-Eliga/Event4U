@@ -221,13 +221,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805181027036_coucou.cs" />
-    <Compile Include="Migrations\201805181027036_coucou.Designer.cs">
-      <DependentUpon>201805181027036_coucou.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805171443376_fk.cs" />
-    <Compile Include="Migrations\201805171443376_fk.Designer.cs">
-      <DependentUpon>201805171443376_fk.cs</DependentUpon>
+    <Compile Include="Migrations\201805181302180_db.cs" />
+    <Compile Include="Migrations\201805181302180_db.Designer.cs">
+      <DependentUpon>201805181302180_db.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -341,11 +337,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201805181027036_coucou.resx">
-      <DependentUpon>201805181027036_coucou.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805171443376_fk.resx">
-      <DependentUpon>201805171443376_fk.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805181302180_db.resx">
+      <DependentUpon>201805181302180_db.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
