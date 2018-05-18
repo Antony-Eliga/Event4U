@@ -10,6 +10,6 @@ namespace BO
     {
         public int Id { get; set; }
         public string Path { get; set; }
-        public Event Event { get; set; }
+        public virtual Event Event { get; set; }
     }
 }

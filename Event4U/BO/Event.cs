@@ -18,7 +18,7 @@ namespace BO
         public DateTime dateFin { get; set; }
         [Display(Name = "Descriptif fin l'événement")]
         public string descriptif { get; set; }
-        public virtual List<Image> Images { get; set; }
+        public virtual ICollection<Image> Images { get; set; }
 
         public float lat { get; set; }
         public float lng { get; set; }

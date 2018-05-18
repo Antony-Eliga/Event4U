@@ -27,17 +27,21 @@
                     </div>
 
                     <div class="input-field col s12">
+                        @Html.LabelFor(model => model.descriptif, htmlAttributes: new { @class = "" })
+                        @Html.EditorFor(model => model.descriptif, new { htmlAttributes = new { @type = "text", @class = "" } })
+                        @Html.ValidationMessageFor(model => model.descriptif, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="input-field col s12">
                         @Html.LabelFor(model => model.address, htmlAttributes: new { @class = "" })
                         @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "", @id = "address" } })
                         @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
                     </div>
                     <div class="input-field col s12">
-                        @Html.LabelFor(model => model.lat, htmlAttributes: new { @class = "" })
                         @Html.EditorFor(model => model.lat, new { htmlAttributes = new { @type = "hidden", @step = "0.01", @class = "form-control", @id = "lat" } })
                         @Html.ValidationMessageFor(model => model.lat, "", new { @class = "text-danger" })
                     </div>
                     <div class="input-field col s12">
-                        @Html.LabelFor(model => model.lng, htmlAttributes: new { @class = "" })
                         @Html.EditorFor(model => model.lng, new { htmlAttributes = new { @type = "hidden", @step = "0.01", @class = "form-control", @id = "lng" } })
                         @Html.ValidationMessageFor(model => model.lng, "", new { @class = "text-danger" })
                     </div>

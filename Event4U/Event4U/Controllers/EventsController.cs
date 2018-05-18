@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using BO;
 using Event4U.Models;
+using System.IO;
 
 namespace Event4U.Controllers
 {
@@ -16,7 +17,6 @@ namespace Event4U.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        [AllowAnonymous]
         // GET: Events
         public ActionResult Index()
         {
@@ -56,10 +56,26 @@ namespace Event4U.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,name,date,dateFin,address,lat,lng,descriptif")] Event @event)
+        public ActionResult Create([Bind(Include = "Id,name,date,dateFin,address,lat,lng,descriptif")] Event @event, HttpPostedFileBase[] files)
         {
             if (ModelState.IsValid)
             {
+                foreach (HttpPostedFileBase file in files)
+                {
+                    if (file != null)
+                    {
+
+                        string _FileName = Path.GetFileName(file.FileName);
+                        string _path = Path.Combine(Server.MapPath("~/Content/upload"), _FileName);
+                        file.SaveAs(_path);
+
+                        Image img = new Image();
+                        img.Path = $"~/Content/upload/{_FileName}";
+                        img.Event = @event;
+                        db.Images.Add(img);
+                    }
+                }
+
                 db.Events.Add(@event);
                 db.SaveChanges();
                 return RedirectToAction("Index");
