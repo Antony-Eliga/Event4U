@@ -19,5 +19,10 @@ namespace Event4U.Controllers
         {
             return Json(db.Events.ToList(), JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult DetailEvent(int id)
+        {
+            return PartialView(@"~/Views/Events/DetailEvent.cshtml", db.Events.Find(id));
+        }
     }
 }

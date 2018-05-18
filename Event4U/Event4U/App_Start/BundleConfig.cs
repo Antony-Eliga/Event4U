@@ -26,10 +26,9 @@ namespace Event4U
             //                     "~/Scripts/bootstrap.js",
             //                      "~/Scripts/respond.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/materialize").Include(
-            "~/Content/materialize/js/materialize.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/main").Include(
+                        "~/Content/materialize/js/materialize.min.js",
                         "~/Content/js/underscore-min.js",
                         "~/Content/js/jquery.csv.min.js",
                         "~/Content/js/glide.min.js",

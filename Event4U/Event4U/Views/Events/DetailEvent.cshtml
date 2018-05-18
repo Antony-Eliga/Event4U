@@ -1,0 +1,30 @@
+﻿@model BO.Event
+
+
+<li>
+    <div class="slider">
+        <ul class="slides">
+            @*@foreach (var url in Model.image)
+                {
+                    <li>
+                        <img src=@url>
+                    </li>
+                }*@
+        </ul>
+    </div>
+</li>
+<li>@Html.DisplayFor(model => model.name)</li>
+<li><div class="divider"></div></li>
+<li>
+    @Html.DisplayFor(model => model.date)
+    @Html.DisplayFor(model => model.dateFin)
+</li>
+<li>@Html.DisplayFor(model => model.descriptif)</li>
+<li>@Html.DisplayFor(model => model.address)</li>
+<li><a class="subheader">Parkings</a></li>
+<li><div class="divider"></div></li>
+<li><a class="parking" href="#!"></a></li>
+<li><div class="divider"></div></li>
+<li><a class="parking" href="#!"></a></li>
+<li><div class="divider"></div></li>
+<li><a class="parking" href="#!"></a></li>

@@ -17,7 +17,7 @@ h1, h2, h3 {
 
 .bienvenue {
   position: absolute;
-  top: 250px;
+  top: 50%;
   left: 50%;
   width: 500px;
   margin-left: -250px;
@@ -50,32 +50,63 @@ main {
 
 #map {
   height: 100%;
+  width: 100%;
+  position: absolute;
+  overflow: hidden;
+  top: 188px;
 }
 
 .back {
   display: none;
 }
 
+.back .btn-floating {
+  right: 25px;
+}
+
+.slider {
+  height: 188px;
+}
+
+.slides {
+  height: 100% !important;
+}
+
+.side-nav {
+  position: relative;
+  height: 100%
+}
+
+.side-nav .parking {
+  margin: 5px;
+  height: 100%;
+  line-height: 14px;
+  padding: 0 5px;
+}
+
+.side-nav .row .col {
+  padding: 0;
+}
+
 .eventList {
-  display: none;
   background-color: #ee6e73;
 }
 
 .eventList .row {
   margin-bottom: 0px;
-        margin-bottom: 0px;
-    }
+  margin-bottom: 0px;
+}
 
 .btn {
-    margin: 2px !important;
+  margin: 2px !important;
 }
 
 .prev {
-  left: 1.5rem
+  left: 1.5rem;
 }
 
 .next {
-  right: 1.5rem
+  right: 1.5rem;
 }
 
 .slide {
@@ -97,4 +128,14 @@ main {
 
 .slide.selected {
   border-color: blue;
+}
+
+.button-collapse {
+  padding-top: 5px;
+  padding-right: 3px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  position: fixed;
+  bottom: 0;
+  display: none;
 }
