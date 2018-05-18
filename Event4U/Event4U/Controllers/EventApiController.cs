@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
 using BO;
+using Newtonsoft.Json;
 
 namespace Event4U.Controllers
 {
@@ -17,6 +18,7 @@ namespace Event4U.Controllers
         // GET: Events
         public JsonResult IndexJson()
         {
+            db.Configuration.ProxyCreationEnabled = false;
             return Json(db.Events.ToList(), JsonRequestBehavior.AllowGet);
         }
 
