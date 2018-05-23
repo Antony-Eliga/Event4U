@@ -27,7 +27,8 @@ namespace Event4U.Controllers
         // GET: Events
         public ActionResult IndexPartial()
         {
-            return PartialView(@"~/Views/Events/View.cshtml", db.Events.ToList());
+            var test = db.Events.ToList();
+            return PartialView(@"~/Views/Events/View.cshtml", test);
         }
 
         // GET: Events/Details/5

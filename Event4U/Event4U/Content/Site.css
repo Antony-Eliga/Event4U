@@ -13,6 +13,7 @@ h1, h2, h3 {
 
 .container-bienvenue {
   position: relative;
+  display: none;
 }
 
 .bienvenue {
@@ -44,20 +45,16 @@ html {
 }
 
 main {
-  height: calc(100% - 134px);
+  height: calc(100% - 200px);
   flex: 1 0 auto;
 }
 
 #map {
-  height: 100%;
+  height: calc(100% - 200px);
   width: 100%;
   position: absolute;
   overflow: hidden;
-  top: 188px;
-}
-
-.back {
-  display: none;
+  top: 200px;
 }
 
 .back .btn-floating {
@@ -85,6 +82,7 @@ main {
 }
 
 .eventList {
+  height: 144px;
   background-color: #ee6e73;
 }
 
@@ -110,15 +108,41 @@ main {
   border-style: solid;
   border-width: 1px;
   border-color: black;
-  width: 100px;
 }
 
 #intro {
   text-align: center;
+  height: 100%;
 }
 
 #intro .card-panel {
   text-align: center;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  display: table;
+}
+
+#intro .card-panel .image, #intro .card-panel .description {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+#intro .card-panel img {
+  text-align: center;
+  margin: 0;
+  height: 92px;
+  vertical-align: middle;
+}
+
+.glide__track {
+  height: 100%;
+}
+
+.glide__slides {
+  padding: 5px 0;
+  height: 100%;
   margin: 0;
 }
 
@@ -134,4 +158,14 @@ main {
   position: fixed;
   bottom: 0;
   display: none;
+}
+
+@media only screen and (min-width: 601px) {
+  main {
+    height: calc(100% - 208px);
+  }
+  #map {
+    top: 208px;
+    height: calc(100% - 208px);
+  }
 }

@@ -6,9 +6,25 @@
     {
         <li class="glide__slide slide" data-id=@item.Id>
             <div class='card-panel'>
-                @Html.DisplayFor(modelItem => item.name)
-                <br />
-                @Html.DisplayFor(modelItem => item.date)
+                @if (item.Images.Count != 0)
+                {
+                    <div class="image">
+                        <img src=@item.Images.First().Path />
+                    </div>
+                    <div class="description">
+                        @Html.DisplayFor(modelItem => item.name)
+                        <br />
+                        @Html.DisplayFor(modelItem => item.date)
+                    </div>
+                }
+                else
+                {
+                    <div class="description">
+                        @Html.DisplayFor(modelItem => item.name)
+                        <br />
+                        @Html.DisplayFor(modelItem => item.date)
+                    </div>
+                }
             </div>
         </li>
     }
