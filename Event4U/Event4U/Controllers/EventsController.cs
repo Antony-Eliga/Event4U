@@ -65,7 +65,6 @@ namespace Event4U.Controllers
                 {
                     if (file != null)
                     {
-
                         string _FileName = Path.GetFileName(file.FileName);
                         string _path = Path.Combine(Server.MapPath("~/Content/upload"), _FileName);
                         file.SaveAs(_path);
