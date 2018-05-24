@@ -36,4 +36,11 @@
             }
         });
     });
+
+    $('#datetimepicker').datetimepicker({
+        format: 'd/m/Y H:i:s',
+    });
+    $('#datefintimepicker').datetimepicker({
+        format: 'd/m/Y H:i:s',
+    });
 });

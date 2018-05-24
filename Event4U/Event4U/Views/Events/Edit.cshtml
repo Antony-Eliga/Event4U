@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="file-field input-field col s12">
-                        <div class="btn">
+                        <div class="waves-effect waves-light btn blue lighten-1">
                             <span>Images</span>
                             @Html.TextBox("files", "", new { @type = "file", multiple = "multiple" })
                         </div>
@@ -59,11 +59,11 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row center-align">
                         <input type="submit" value="Valider" class="waves-effect waves-light btn blue lighten-1" />
                     </div>
 
-                    <div>
+                    <div class="center-align">
                         @Html.ActionLink("Retour à la liste", "Index")
                     </div>
                 }

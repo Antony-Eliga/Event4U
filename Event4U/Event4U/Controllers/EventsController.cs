@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using BO;
 using Event4U.Models;
 using System.IO;
+using System.Globalization;
 
 namespace Event4U.Controllers
 {
@@ -57,8 +58,17 @@ namespace Event4U.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,name,date,dateFin,address,lat,lng,descriptif")] Event @event, HttpPostedFileBase[] files)
+        public ActionResult Create([Bind(Include = "Id,name,address,lat,lng,descriptif")] Event @event, HttpPostedFileBase[] files, string date, string dateFin)
         {
+            if (@event.date != null)
+            {
+                @event.date = DateTime.ParseExact(date, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            }
+            if (@event.dateFin != null)
+            {
+                @event.dateFin = DateTime.ParseExact(dateFin, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            }
+
             if (ModelState.IsValid)
             {
                 foreach (HttpPostedFileBase file in files)

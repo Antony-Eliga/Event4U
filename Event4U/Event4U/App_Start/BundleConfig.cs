@@ -29,6 +29,7 @@ namespace Event4U
 
             bundles.Add(new ScriptBundle("~/bundles/main").Include(
                         "~/Content/materialize/js/materialize.min.js",
+                        "~/Content/datepicker/jquery.datetimepicker.full.min.js",
                         "~/Content/js/underscore-min.js",
                         "~/Content/js/jquery.csv.min.js",
                         "~/Content/js/glide.min.js",
@@ -38,6 +39,7 @@ namespace Event4U
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/materialize/css/materialize.min.css",
+                      "~/Content/datepicker/jquery.datetimepicker.min.css",
                       "~/Content/glide.core.min.css",
                       "~/Content/glide.theme.min.css",
                       "~/Content/site.css"
