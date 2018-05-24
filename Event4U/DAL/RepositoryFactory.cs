@@ -20,9 +20,5 @@ namespace DAL
         {
             return new EventRepository<C>(context);
         }
-        public static IRepository<Park> GetParkRepository(C context)
-        {
-            return new ParkRepository<C>(context);
-        }
     }
 }

@@ -213,24 +213,18 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Constantes.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ParkingApiController.cs" />
     <Compile Include="Controllers\EventApiController.cs" />
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\ParksController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805220715386_init.cs" />
-    <Compile Include="Migrations\201805220715386_init.Designer.cs">
-      <DependentUpon>201805220715386_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ParkService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -311,11 +305,13 @@
     <Content Include="Views\Events\Edit.cshtml" />
     <Content Include="Views\Events\Index.cshtml" />
     <Content Include="Views\Events\View.cshtml" />
+    <Content Include="Views\Parks\DetailParking.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\img\" />
     <Folder Include="Content\materialize\fonts\" />
+    <Folder Include="Services\" />
     <Folder Include="Views\Image\" />
   </ItemGroup>
   <ItemGroup>
@@ -335,11 +331,6 @@
       <Project>{fb88d3ca-8662-4f3c-98d4-fa6b66a6dd1a}</Project>
       <Name>DAL</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201805220715386_init.resx">
-      <DependentUpon>201805220715386_init.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

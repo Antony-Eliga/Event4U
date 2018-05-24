@@ -52,8 +52,6 @@
     <Compile Include="Event.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="Park.cs" />
-    <Compile Include="ParkInformation.cs" />
-    <Compile Include="Parks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

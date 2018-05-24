@@ -49,7 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ParkRepository.cs" />
     <Compile Include="EventRepository.cs" />
     <Compile Include="GenericRepository.cs" />
     <Compile Include="IDbContext.cs" />

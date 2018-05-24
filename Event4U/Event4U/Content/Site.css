@@ -74,7 +74,11 @@ main {
   margin: 5px;
   height: 100%;
   line-height: 14px;
-  padding: 0 5px;
+  padding: 5px;
+}
+
+.side-nav .parking.selected {
+  background: #e1f5fe;
 }
 
 .side-nav .row .col {

@@ -2,7 +2,8 @@ const data = {
     parkingUrl: "https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=export-api-parking-citedia",
     csvUrl: "http://data.citedia.com/r1/parks/timetable-and-prices",
     eventUrl: "http://localhost:53287/EventApi/IndexJson",
-    detailUrl: "http://localhost:53287/EventApi/DetailEvent/",
+    detailEventUrl: "http://localhost:53287/EventApi/DetailEvent/",
+    detailParkingUrl: "http://localhost:53287/ParkingApi/DetailParking/",
     markerImage: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
     rennes: {
         lat: 48.1119800,
@@ -90,6 +91,7 @@ function routeTrace(direction, origin, destination) {
     directionsService.route(request, function(response, status) {
         if (status == google.maps.DirectionsStatus.OK) {
             direction.setDirections(response);
+            $(".button-collapse").sideNav("hide");
         }
     });
 }
@@ -162,7 +164,7 @@ function initGlide() {
                 }
             }
         });
-        glide.mount()
+        glide.mount();
     } else {
         $("#intro").hide();
     }
@@ -170,33 +172,34 @@ function initGlide() {
 
 function addMarkerInfo(marker, content, position) {
     const infoWindow = new google.maps.InfoWindow({
-        content: location.name,
+        content: content.name,
         position: position
     });
     google.maps.event.addListener(marker, "click", function() {
+        const element = $(".side-nav").find(`[data-id='${content.id}']`)[0];
+        console.log("element", element, content.id);
+        content.max && $(element).trigger("click");
         infoWindow.open(data.map, marker);
     });
 }
 
 //Ajoute les markers sur la carte
 function addMarkers(locations) {
-    console.log("addMarkers", locations);
     if (locations) {
-
         const markers = [];
         locations = Array.isArray(locations) ? locations : [locations]
 
         locations.forEach(function(location) {
             const position = {
-                lat: location.lat,
-                lng: location.lng
+                lat: location.max ? location.coordinates[0] : location.lat,
+                lng: location.max ? location.coordinates[1] : location.lng
             };
             const marker = new google.maps.Marker({
                 position: position,
-                label: location.name,
+                icon: location.max ? "https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png" : null
             });
 
-            addMarkerInfo(marker, location.name, position);
+            addMarkerInfo(marker, location, position);
             markers.push(marker);
         });
 
@@ -216,7 +219,6 @@ function getCout(park, event) {
     const duree = 570;
     var cout = 0;
     var cout30 = roundDecimal((park.tarif_30 > 0) ? park.tarif_30 : (park.tarif_1h30 - park.tarif_1h));
-    console.log("cout30", cout30);
     if (duree < 15) {
         cout = park.tarif_15;
     } else if (duree < 30) {
@@ -229,40 +231,43 @@ function getCout(park, event) {
     return roundDecimal(cout);
 }
 
-function setParkingMenu(park, coordinates, i) {
-    $(".parking:eq(" + i + ")").click(function() {
-        data.destination = coordinates;
+function setParkingMenu(park) {
+    const element = $(".side-nav").find(`[data-id='${park.id}']`)[0];
+    $(element).click(function() {
+        $(".parking").removeClass("selected");
+        $(this).addClass("selected");
+        const park = _.findWhere(getParks(), {
+            id: $(this).data("id")
+        });
+        data.destination = {
+            lat: park.coordinates[0],
+            lng: park.coordinates[1],
+        };
         if (data.origin) {
             routeTrace(data.direction, data.origin, data.destination);
         } else {
             $(".back").trigger("click");
         }
     });
+}
 
-    var html = `<div class="row">
-                      <div class="col s2 light-blue-text text-darken-1">
-                        <i class="material-icons">local_parking</i>
-                      </div>
-                      <div class="col s10">${park.name}<br/>`
-    html += data.origin ?
-        `<span class="teal-text text-accent-4">${park.duration} - ${park.distance}</span>
-        <br/>` : "";
-    html += `<span>${park.free}/${park.max} places disponibles</span><br/>
-            <br/>
-            <span class="light-blue-text text-darken-4">Coût estimé ~${getCout(park,data.event)}€</span>
-          </div>
-        </div>`;
-    $(".parking:eq(" + i + ")").data("id", park.id);
-    $(".parking:eq(" + i + ")").html(html);
-    $(".slider").slider({
-        interval: 1000,
-        height: 188
+function getDetailParking(park) {
+    $(".side-nav ").remove(".parking");
+    $.ajax({
+        url: data.detailParkingUrl,
+        type: "POST",
+        data: park,
+        success: function(result) {
+            $(".side-nav").append(result);
+            setParkingMenu(park);
+        }
     });
 }
 
 function setParkingsMenu(parks) {
-    parks.forEach(function(park, i) {
+    parks.forEach(function(park) {
         const service = new google.maps.DistanceMatrixService();
+        console.log("park", park);
         const coordinates = {
             lat: park.coordinates[0],
             lng: park.coordinates[1]
@@ -279,10 +284,11 @@ function setParkingsMenu(parks) {
                 const distance = element && element.distance && element.distance.text;
                 park.distance = distance;
                 park.duration = duration;
-                setParkingMenu(park, coordinates, i);
+                park.cout = getCout(park, data.event);
+                getDetailParking(park);
             });
         } else {
-            setParkingMenu(park, coordinates, i);
+            getDetailParking(park);
         }
     });
 }
@@ -304,8 +310,6 @@ function initDom() {
     });
 
     initGlide();
-
-
 
     $("#go").click(function() {
         $(".container-bienvenue").hide();
@@ -334,7 +338,7 @@ function initDom() {
 }
 
 function getDetailEvent(id) {
-    return urlToData(data.detailUrl + id, true);
+    return urlToData(data.detailEventUrl + id, true);
 }
 
 $(document).ready(function() {
@@ -357,11 +361,18 @@ $(document).ready(function() {
         const eventOne = _.findWhere(events, {
             Id: $(this).data("id")
         });
+        const locations = get3Parks(eventOne);
         data.event = eventOne;
         data.markerCluster.clearMarkers();
-        addMarkers(eventOne);
+        locations.push(eventOne)
+
+        addMarkers(locations);
 
         $(".side-nav").html(getDetailEvent(eventOne.Id));
+        $(".slider").slider({
+            interval: 1000,
+            height: 188
+        });
         setParkingsMenu(get3Parks(eventOne));
         //CSS + affichage SideNav
         if ($(".side-nav").css("transform") === "matrix(1, 0, 0, 1, -300, 0)") {

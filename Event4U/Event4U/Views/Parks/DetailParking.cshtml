@@ -1,0 +1,23 @@
+﻿@model BO.Park
+
+<li><div class="divider"></div></li>
+<li>
+    <a class="parking" href="#" data-id="@Model.Id">
+        <div class="row">
+            <div class="col s2 light-blue-text text-darken-1">
+                <i class="material-icons">local_parking</i>
+            </div>
+            <div class="col s10">
+                @Model.Name<br />
+                @if (Model.Duration != null && Model.Distance != null)
+            {
+                    <span class="teal-text text-accent-4">@Model.Duration - @Model.Distance</span>
+                    <br />
+                }
+                <span>@Model.Free/@Model.Max places disponibles</span><br />
+                <br />
+                <span class="light-blue-text text-darken-4">Coût estimé ~@Model.Cout€</span>
+            </div>
+        </div>
+    </a>
+</li>
