@@ -1,5 +1,5 @@
 const data = {
-    parkingUrl: "http://data.citedia.com/r1/parks?crs=EPSG:4326",
+    parkingUrl: "https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=export-api-parking-citedia",
     csvUrl: "http://data.citedia.com/r1/parks/timetable-and-prices",
     eventUrl: "http://localhost:53287/EventApi/IndexJson",
     detailUrl: "http://localhost:53287/EventApi/DetailEvent/",
@@ -22,74 +22,38 @@ function urlToData(url, text) {
     return text ? Httpreq.responseText : JSON.parse(Httpreq.responseText);
 }
 
-//Json à partir d'un csv
-function csvToJson(csv) {
-    const base = csv;
-    const chaineRegex = /"(.*?)"/g;
-    const replaceRegex = /;/g;
-    csv.replace(chaineRegex, function(match, g1, g2) {
-        const cleanText = g1.replace(replaceRegex, " ");
-        csv = csv.replace(match, cleanText);
-    });
-    return ret = $.csv.toObjects(csv, {
-        separator: ";",
-        delimiter: "\n"
-    });
-}
-
-//Récupère la liste des horaires + tarifs
-function getInfos() {
-    const csv = urlToData(data.csvUrl, true);
-    return csvToJson(csv)
-}
-
 // Récupère la liste des évènements
 function getEvents() {
     return urlToData(data.eventUrl);
 }
 
 //Création d'un objet plus cohérent pour le parking
-function getCleanPark(park, infos, features) {
-    const parkInfo = park && park.parkInformation;
-    features = features && features.features
-    var geometry = null;
-    var information = null;
-    //Parse feature pour récupérer coordonnées GPS
-    features && features.forEach(function(feature) {
-        if (feature.id == park.id) {
-            geometry = feature.geometry;
-        }
-    });
-
-    //Parse information pour récupéré tarifs + horaires
-    infos && infos.forEach(function(info) {
-        if (info.Parking == park.id) {
-            information = info;
-        }
-    });
-
-    //Formatage des parkings
+function getCleanPark(park) {
     return {
-        id: park && park.id,
-        name: parkInfo && parkInfo.name || "Kleber",
-        status: parkInfo && parkInfo.status || "FULL",
-        max: parkInfo && parkInfo.max || 0,
-        free: parkInfo && parkInfo.free || 0,
-        coordinates: geometry.coordinates,
-        address: information && information.Adresse,
-        capacite: information && information.Capacité,
-        horaire: information && information.Horaires,
-        seuil: information && information.Seuil_complet,
-        tarif: information && information.Tarifs
+        id: park && park.key,
+        name: park && park.key,
+        status: park && park.status,
+        max: park && park.max || 0,
+        free: park && park.free || 0,
+        coordinates: park && park.geo,
+        tarif_15: park && park.tarif_15,
+        tarif_30: park && park.tarif_30,
+        tarif_1h: park && park.tarif_1h,
+        tarif_1h30: park && park.tarif_1h30,
+        tarif_2h: park && park.tarif_2h,
+        tarif_3h: park && park.tarif_3h,
+        tarif_4h: park && park.tarif_4h,
+        horaire: park && park.orgahoraires
     };
 }
 
 // Liste des parkings
 function getParks() {
     const obj = urlToData(data.parkingUrl);
+    const list = obj && obj.records;
     const parks = [];
-    obj && obj.parks.forEach(function(park) {
-        parks.push(getCleanPark(park, getInfos(), obj.features));
+    list && list.forEach(function(park) {
+        parks.push(getCleanPark(park.fields));
     });
     console.log("getParks => parks", parks);
     return parks;
@@ -99,7 +63,7 @@ function getParks() {
 function get3Parks(event) {
     var parks = getParks();
     parks = _.where(parks, {
-        status: "AVAILABLE"
+        status: "OUVERT"
     });
     parks = _.filter(parks, function(park) {
         return park.free > 10;
@@ -107,7 +71,7 @@ function get3Parks(event) {
     parks.forEach(function(park) {
         park.distance = google.maps.geometry.spherical.computeDistanceBetween(
             new google.maps.LatLng(event.lat, event.lng),
-            new google.maps.LatLng(park.coordinates[1], park.coordinates[0]));
+            new google.maps.LatLng(park.coordinates[0], park.coordinates[1]));
     });
     parks = _.sortBy(parks, "distance");
     console.log("get3Parks => parks", parks, parks.slice(0, 3));
@@ -242,6 +206,29 @@ function addMarkers(locations) {
     }
 }
 
+function roundDecimal(nombre, precision) {
+    var precision = precision || 2;
+    var tmp = Math.pow(10, precision);
+    return Math.round(nombre * tmp) / tmp;
+}
+
+function getCout(park, event) {
+    const duree = 570;
+    var cout = 0;
+    var cout30 = roundDecimal((park.tarif_30 > 0) ? park.tarif_30 : (park.tarif_1h30 - park.tarif_1h));
+    console.log("cout30", cout30);
+    if (duree < 15) {
+        cout = park.tarif_15;
+    } else if (duree < 30) {
+        cout = park.tarif_30;
+    } else if (duree < 60) {
+        cout = park.tarif_1h;
+    } else {
+        cout = Math.ceil(duree / 30) * cout30;
+    }
+    return roundDecimal(cout);
+}
+
 function setParkingMenu(park, coordinates, i) {
     $(".parking:eq(" + i + ")").click(function() {
         data.destination = coordinates;
@@ -262,7 +249,7 @@ function setParkingMenu(park, coordinates, i) {
         <br/>` : "";
     html += `<span>${park.free}/${park.max} places disponibles</span><br/>
             <br/>
-            <span>${park.tarif}</span>
+            <span class="light-blue-text text-darken-4">Coût estimé ~${getCout(park,data.event)}€</span>
           </div>
         </div>`;
     $(".parking:eq(" + i + ")").data("id", park.id);
@@ -277,8 +264,8 @@ function setParkingsMenu(parks) {
     parks.forEach(function(park, i) {
         const service = new google.maps.DistanceMatrixService();
         const coordinates = {
-            lat: park.coordinates[1],
-            lng: park.coordinates[0]
+            lat: park.coordinates[0],
+            lng: park.coordinates[1]
         };
         if (data.origin) {
             service.getDistanceMatrix({
