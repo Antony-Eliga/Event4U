@@ -169,3 +169,7 @@ main {
     height: calc(100% - 208px);
   }
 }
+
+.delete-image {
+    width: 100%;
+}

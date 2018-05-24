@@ -104,10 +104,25 @@ namespace Event4U.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,name,date,lat,lng,address,descriptif")] Event @event)
+        public ActionResult Edit([Bind(Include = "Id,name,date,dateFin,lat,lng,address,descriptif")] Event @event, HttpPostedFileBase[] files)
         {
             if (ModelState.IsValid)
             {
+                foreach (HttpPostedFileBase file in files)
+                {
+                    if (file != null)
+                    {
+                        string _FileName = Path.GetFileName(file.FileName);
+                        string _path = Path.Combine(Server.MapPath("~/Content/upload"), _FileName);
+                        file.SaveAs(_path);
+
+                        Image img = new Image();
+                        img.Path = $"Content/upload/{_FileName}";
+                        img.Event = @event;
+                        db.Images.Add(img);
+                    }
+                }
+
                 db.Entry(@event).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

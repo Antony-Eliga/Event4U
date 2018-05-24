@@ -6,12 +6,12 @@
 
 <div class="container">
     <div class="row">
-        <div class="col s12 m12">
+        <div class="col s12 m7">
             <div class="card-panel">
-                @using (Html.BeginForm())
+                @using (Html.BeginForm("Edit", "events", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
-                    <h2>Editer un événement</h2>
+                    <h2>Editer</h2>
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.HiddenFor(model => model.Id)
                     <div class="input-field col s12">
@@ -21,13 +21,11 @@
                     </div>
 
                     <div class="input-field col s12 m6">
-                        @Html.LabelFor(model => model.date, htmlAttributes: new { @class = "" })
                         @Html.EditorFor(model => model.date, new { htmlAttributes = new { @type = "date", @class = "" } })
                         @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="input-field col s12 m6">
-                        @Html.LabelFor(model => model.dateFin, htmlAttributes: new { @class = "" })
                         @Html.EditorFor(model => model.dateFin, new { htmlAttributes = new { @type = "date", @class = "" } })
                         @Html.ValidationMessageFor(model => model.dateFin, "", new { @class = "text-danger" })
                     </div>
@@ -51,6 +49,16 @@
                         @Html.ValidationMessageFor(model => model.lng, "", new { @class = "text-danger" })
                     </div>
 
+                    <div class="file-field input-field col s12">
+                        <div class="btn">
+                            <span>Images</span>
+                            @Html.TextBox("files", "", new { @type = "file", multiple = "multiple" })
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                        </div>
+                    </div>
+
                     <div class="row">
                         <input type="submit" value="Valider" class="waves-effect waves-light btn blue lighten-1" />
                     </div>
@@ -61,9 +69,28 @@
                 }
             </div>
         </div>
+        <div class="col s12 m5">
+            <div class="card-panel">
+                <h3>Images</h3>
+                <table class="table">
+                    <thead>
+                    <th></th>
+                    <th></th>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Images)
+                        {
+                            <tr id="@(item.Id)">
+                                <td><img class="delete-image" src="@Url.Content("~/")@(item.Path)"></td>
+                                <td><a class="delete-image red-text text-darken-2" data-id="@(item.Id)" href="#"><i class="material-icons">delete</i></a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

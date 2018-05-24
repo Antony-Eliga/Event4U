@@ -19,5 +19,21 @@
         format: 'dd/mm/yyyy'
     });
 
+    $(".delete-image").on("click", function (e) {
+        e.preventDefault();
+        var id = $(this).attr('data-id')
+        console.log("id => " + id);
 
+        jQuery.ajax({
+            url: window.origin + '/EventApi/DeleteImageById/' + id,
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data.Message == "Ok") {
+                    $("#" + id).fadeOut("slow");
+                }
+            }
+        });
+    });
 });
