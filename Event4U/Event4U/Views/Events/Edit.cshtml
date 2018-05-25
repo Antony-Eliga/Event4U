@@ -21,13 +21,17 @@
                     </div>
 
                     <div class="input-field col s12 m6">
-                        @Html.EditorFor(model => model.date, new { htmlAttributes = new { @type = "date", @class = "" } })
+                        @{ Html.EnableClientValidation(false); }
+                        @Html.LabelFor(model => model.date, htmlAttributes: new { @class = "" })
+                        @Html.EditorFor(model => model.date, new { htmlAttributes = new { @type = "text", @class = "", id = "datetimepicker" } })
                         @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="input-field col s12 m6">
-                        @Html.EditorFor(model => model.dateFin, new { htmlAttributes = new { @type = "date", @class = "" } })
+                        @Html.LabelFor(model => model.dateFin, htmlAttributes: new { @class = "" })
+                        @Html.EditorFor(model => model.dateFin, new { htmlAttributes = new { @type = "text", @class = "", id = "datefintimepicker" } })
                         @Html.ValidationMessageFor(model => model.dateFin, "", new { @class = "text-danger" })
+                        @{ Html.EnableClientValidation(true); }
                     </div>
 
                     <div class="input-field col s12">
@@ -59,14 +63,14 @@
                         </div>
                     </div>
 
-                    <div class="row center-align">
+                    <div class="col s12 center-align">
                         <input type="submit" value="Valider" class="waves-effect waves-light btn blue lighten-1" />
                     </div>
 
                     <div class="center-align">
                         @Html.ActionLink("Retour à la liste", "Index")
                     </div>
-                }
+                            }
             </div>
         </div>
         <div class="col s12 m5">

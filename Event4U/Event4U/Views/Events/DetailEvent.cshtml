@@ -6,18 +6,16 @@
             @foreach (var url in Model.Images)
             {
             <li>
-                <img src="@Url.Content("~/")@(url.Path)">
+                <img src="@Url.Content(" ~/")@(url.Path)">
             </li>
             }
         </ul>
     </div>
 </li>
-<li>@Html.DisplayFor(model => model.name)</li>
+<li class="center-align"><h4>@Html.DisplayFor(model => model.name)</h4></li>
 <li><div class="divider"></div></li>
-<li>
-    @Html.DisplayFor(model => model.date)
-    @Html.DisplayFor(model => model.dateFin)
-</li>
-<li>@Html.DisplayFor(model => model.descriptif)</li>
-<li>@Html.DisplayFor(model => model.address)</li>
+<li class="valign-wrapper"><i class="material-icons">date_range</i>@Html.DisplayFor(model => model.date)</li>
+<li class="valign-wrapper"><i class="material-icons">date_range</i>@Html.DisplayFor(model => model.dateFin)</li>
+<li class="valign-wrapper"><i class="material-icons">description</i>@Html.DisplayFor(model => model.descriptif)</li>
+<li class="valign-wrapper"><i class="material-icons">location_on</i>@Html.DisplayFor(model => model.address)</li>
 <li><a class="subheader">Parkings</a></li>
