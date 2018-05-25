@@ -50,6 +50,7 @@ namespace Event4U.Controllers
         // GET: Events/Create
         public ActionResult Create()
         {
+            HtmlHelper.ClientValidationEnabled = false;
             return View();
         }
 
@@ -62,11 +63,11 @@ namespace Event4U.Controllers
         {
             if (date != null)
             {
-                @event.date = DateTime.ParseExact(date, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                @event.date = DateTime.ParseExact(date, "MM/dd/yyyy HH:mm:ss", null);
             }
             if (dateFin != null)
             {
-                @event.dateFin = DateTime.ParseExact(dateFin, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                @event.dateFin = DateTime.ParseExact(dateFin, "MM/dd/yyyy HH:mm:ss", null);
             }
 
             if (ModelState.IsValid)
@@ -120,11 +121,11 @@ namespace Event4U.Controllers
         {
             if (date != null)
             {
-                @event.date = DateTime.ParseExact(date, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                @event.date = DateTime.ParseExact(date, "MM/dd/yyyy HH:mm:ss", null);
             }
             if (dateFin != null)
             {
-                @event.dateFin = DateTime.ParseExact(dateFin, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                @event.dateFin = DateTime.ParseExact(dateFin, "MM/dd/yyyy HH:mm:ss", null);
             }
             if (ModelState.IsValid)
             {
