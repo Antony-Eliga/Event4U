@@ -329,7 +329,6 @@ function initDom() {
         if (data.origin) {
             $(".btn-floating.btn-large").removeClass("red").addClass("green");
             if (data.destination) {
-                setParkingsMenu(get3Parks(data.event));
                 $(".slide.selected").trigger("click");
                 routeTrace(data.direction, data.origin, data.destination);
             }
