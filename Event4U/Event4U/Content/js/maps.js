@@ -215,8 +215,21 @@ function roundDecimal(nombre, precision) {
     return Math.round(nombre * tmp) / tmp;
 }
 
+function JsonDateToTimestamp(date) {
+    return eval("new " + date.replace(/\//g, ""));
+}
+
+function getDuree(debut, fin) {
+    const diff = fin - debut;
+    const minutes = Math.floor(diff / 6e4);
+    const seconds = Math.floor((diff % 6e4) / 1000);
+    return seconds > 0 ? minutes + 1 : minutes;
+}
+
 function getCout(park, event) {
-    const duree = 570;
+    const debut = new Date(JsonDateToTimestamp(event.date));
+    const fin = new Date(JsonDateToTimestamp(event.dateFin));
+    const duree = getDuree(debut, fin);
     var cout = 0;
     var cout30 = roundDecimal((park.tarif_30 > 0) ? park.tarif_30 : (park.tarif_1h30 - park.tarif_1h));
     if (duree < 15) {
