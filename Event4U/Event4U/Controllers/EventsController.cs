@@ -60,11 +60,11 @@ namespace Event4U.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,name,address,lat,lng,descriptif")] Event @event, HttpPostedFileBase[] files, string date, string dateFin)
         {
-            if (@event.date != null)
+            if (date != null)
             {
                 @event.date = DateTime.ParseExact(date, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
             }
-            if (@event.dateFin != null)
+            if (dateFin != null)
             {
                 @event.dateFin = DateTime.ParseExact(dateFin, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
             }
@@ -97,6 +97,8 @@ namespace Event4U.Controllers
         // GET: Events/Edit/5
         public ActionResult Edit(int? id)
         {
+            HtmlHelper.ClientValidationEnabled = false;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -114,8 +116,16 @@ namespace Event4U.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,name,date,dateFin,lat,lng,address,descriptif")] Event @event, HttpPostedFileBase[] files)
+        public ActionResult Edit([Bind(Include = "Id,name,lat,lng,address,descriptif")] Event @event, HttpPostedFileBase[] files, string date, string dateFin)
         {
+            if (date != null)
+            {
+                @event.date = DateTime.ParseExact(date, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            }
+            if (dateFin != null)
+            {
+                @event.dateFin = DateTime.ParseExact(dateFin, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            }
             if (ModelState.IsValid)
             {
                 foreach (HttpPostedFileBase file in files)

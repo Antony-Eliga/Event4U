@@ -1,9 +1,9 @@
 const data = {
     parkingUrl: "https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=export-api-parking-citedia",
     csvUrl: "http://data.citedia.com/r1/parks/timetable-and-prices",
-    eventUrl: "http://localhost:53287/EventApi/IndexJson",
-    detailEventUrl: "http://localhost:53287/EventApi/DetailEvent/",
-    detailParkingUrl: "http://localhost:53287/ParkingApi/DetailParking/",
+    eventUrl: window.origin + "/EventApi/IndexJson",
+    detailEventUrl: window.origin + "/EventApi/DetailEvent/",
+    detailParkingUrl: window.origin + "/ParkingApi/DetailParking/",
     markerImage: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
     rennes: {
         lat: 48.1119800,

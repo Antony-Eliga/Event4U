@@ -7,9 +7,16 @@
 
     <ul class="nav navbar-nav navbar-right">
         <li>
-            @Html.ActionLink("Bonjour " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            
         </li>
+        
+    </ul>
+    <ul class="right hide-on-med-and-down">
+        <li><a class="dropdown-button" href="#!" data-activates="dropdown1"><i class="material-icons right">arrow_drop_down</i>@(User.Identity.GetUserName())</a></li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Se déconnecter</a></li>
+    </ul>
+    <ul id="dropdown1" class="dropdown-content">
+        <li>@Html.ActionLink("Mes événements", "Index", "events", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
     </ul>
     }
 }
