@@ -285,6 +285,7 @@ function setParkingsMenu(parks) {
             lat: park.coordinates[0],
             lng: park.coordinates[1]
         };
+        park.cout = getCout(park, data.event);
         if (data.origin) {
             service.getDistanceMatrix({
                 origins: [data.origin],
@@ -296,8 +297,7 @@ function setParkingsMenu(parks) {
                 const duration = element && element.duration && element.duration.text;
                 const distance = element && element.distance && element.distance.text;
                 park.distance = distance;
-                park.duration = duration;
-                park.cout = getCout(park, data.event);
+                park.duration = duration
                 getDetailParking(park);
             });
         } else {
